@@ -1,71 +1,114 @@
 # Hospital Patient Visits Analysis (MySQL)
 
-An end-to-end SQL project: designing a relational schema, loading multi-year
-data, cleaning it, and answering business questions with exploratory analysis.
-Built as a practice project using a synthetic hospital dataset (no real
-patient data).
+## Objective
+
+Analyze synthetic hospital visit data from 2020–2025 to explore patient demographics, doctor workload, payment behavior, billing patterns, department performance, and service quality.
+
+The project demonstrates an end-to-end SQL workflow, from relational database design and data loading to data cleaning, exploratory analysis, and business-focused insights.
 
 ## Dataset
 
-A simulated hospital operations database covering 2020-2025:
+A simulated hospital operations database covering 2020–2025. The dataset contains no real patient information.
 
 | Table | Rows | Description |
-|---|---|---|
+|---|---:|---|
 | `Dim_Patient` | 2,436 | Patient demographics |
 | `Dim_Doctor` | 200 | Doctor roster |
 | `Dim_Department` | 40 | Hospital departments |
 | `Dim_Diagnosis` | 40 | Diagnosis codes |
 | `Dim_Treatment` | 30 | Treatment/procedure codes |
 | `Dim_PaymentMethod` | 4 | Payment method lookup |
-| `PatientVisits` (2020-2025, combined) | 16,543 | Visit-level fact table: dates, billing, insurance, satisfaction, wait time |
+| `PatientVisits` | 16,543 | Consolidated visit-level fact table containing dates, billing, insurance, satisfaction, and wait-time data |
 
-## What I did
+## Analysis Process
 
-1. **Schema design** (`sql/01_schema.sql`) — 6 dimension tables + 4 yearly
-   visit fact tables, joined with foreign keys.
-2. **Data load** (`sql/02_data_load.sql`) — populated all tables.
-3. **Data cleaning** (`sql/03_data_cleaning.sql`):
-   - Dropped patient records with missing `FirstName` (5 rows — placeholder
-     "dummy" records seeded in the raw data).
-   - Standardized names to proper case and merged `FirstName`/`LastName`
-     into a single `FullName` column.
-   - Normalized inconsistent gender values (`M`/`F`/`Male`/`Female` → `Male`/`Female`).
-   - Split a single `CityStateCountry` free-text field into separate `City`,
-     `State`, `Country` columns.
-   - Dropped department records missing a category (7 rows), and consolidated
-     redundant name fields down to one `DepartmentName`.
-   - Merged 4 separate yearly visit tables into one unified `PatientVisits`
-     fact table (16,543 rows total).
-4. **Exploratory analysis** (`sql/04_exploratory_analysis.sql`) — answered
-   3 business questions plus a couple of extras, detailed below.
+### 1. Database & Schema Design
+Created a relational database consisting of six dimension tables and four source visit tables covering 2020–2025.
 
-## Key findings
+### 2. Data Loading
+Loaded the synthetic hospital dataset into MySQL.
 
-- **Doctor workload is well-balanced.** Across 200 doctors, distinct patients
-  treated ranges roughly 50-108, with no single doctor carrying a
-  disproportionate share — the top doctor (Dr. Vikram Singh) treated 108
-  distinct patients.
-- **UPI is the dominant payment method**, covering 5,404 of 16,543 visits
-  (33%) and ~₹496M in revenue — noticeably ahead of Debit Card, Credit Card,
-  and Cash, which are close to evenly split (~₹332-340M each).
-- **Age isn't a strong driver of bill amount.** Average bill stays in a
-  fairly tight ₹88K-94K band across all age groups, with the 66+ group only
-  marginally higher than 0-17.
-- **Service snapshot:** average wait time is 56.5 minutes and average
-  patient satisfaction is 3.62/5 across all visits — a reasonable starting
-  point for a "what's dragging satisfaction down" follow-up analysis (e.g.
-  wait time vs. satisfaction correlation, or satisfaction by department).
+### 3. Data Cleaning
+Created cleaned dimension tables and a consolidated `PatientVisits` fact table.
+
+Key cleaning steps included:
+
+- Removed patient records with missing first names.
+- Standardized patient names to proper case.
+- Normalized gender values (`M`/`F` → `Male`/`Female`).
+- Split the combined `CityStateCountry` field into separate `City`, `State`, and `Country` columns.
+- Removed department records with missing categories.
+- Standardized department names using the `Specialization` field.
+- Combined four yearly visit tables into a single `PatientVisits` table containing 16,543 visits.
+
+### 4. Exploratory Analysis
+
+The analysis addresses questions including:
+
+- How many distinct patients has each doctor treated?
+- How is revenue distributed across payment methods?
+- How does average bill amount vary across age groups?
+- Which departments generate the most revenue and visits?
+- How do departments rank within their categories by revenue?
+- Which departments have the highest satisfaction and longest wait times?
+- How do weekday and weekend visit volumes compare?
+- How does hospital visit volume change over time?
+- Which doctors have the highest average satisfaction scores among those with at least 100 visits?
+- What treatments are most commonly associated with each diagnosis?
+- Which diagnoses account for the highest visit volumes?
+- What is the overall average wait time, satisfaction score, and bill amount?
+
+## Key Findings
+
+- **Doctor workload is relatively balanced.** Across 200 doctors, the number of distinct patients treated ranges from approximately 50 to 108. The highest-volume doctor, Dr. Vikram Singh, treated 108 distinct patients.
+
+- **UPI is the dominant payment method.** UPI accounted for 5,404 of 16,543 visits (approximately 33%) and generated approximately ₹496M in revenue. Debit Card, Credit Card, and Cash were relatively close in both visit volume and revenue.
+
+- **Average bill amounts are relatively consistent across age groups.** Average bills remain within approximately the ₹88K–94K range across the four age groups, suggesting that age alone does not show a strong association with bill amount in this dataset.
+
+- **Overall service snapshot.** Across all 16,543 visits, the average wait time was approximately 56.5 minutes and the average patient satisfaction score was 3.62/5.
+
+## SQL Techniques Used
+
+- Relational database design
+- Primary and foreign keys
+- `JOIN`
+- `GROUP BY`
+- Aggregate functions (`SUM`, `AVG`, `COUNT`)
+- `COUNT(DISTINCT)`
+- `CASE` statements
+- Common Table Expressions (CTEs)
+- Window functions
+- `RANK()`
+- `HAVING`
+- Date and time functions
+- String manipulation and cleaning
+- Data transformation
 
 ## Tools
 
-MySQL (schema design, joins, aggregation, string cleaning, CASE logic).
+**MySQL 8+**
 
-## How to run
+## Project Structure
 
-Run the files in order against a MySQL 8+ instance:
+```text
+hospital-patient-analytics/
+│
+├── README.md
+│
+└── sql/
+    ├── 01_schema.sql
+    ├── 02_data_load.sql
+    ├── 03_data_cleaning.sql
+    └── 04_exploratory_analysis.sql
 ```
-mysql -u <user> -p < sql/01_schema.sql
-mysql -u <user> -p < sql/02_data_load.sql
-mysql -u <user> -p < sql/03_data_cleaning.sql
-mysql -u <user> -p < sql/04_exploratory_analysis.sql
-```
+
+## How to Run
+
+Run the SQL files in the following order against a MySQL 8+ instance:
+
+1. `sql/01_schema.sql` — creates the database tables.
+2. `sql/02_data_load.sql` — loads the dataset.
+3. `sql/03_data_cleaning.sql` — cleans and consolidates the data.
+4. `sql/04_exploratory_analysis.sql` — runs the exploratory analysis.
+
