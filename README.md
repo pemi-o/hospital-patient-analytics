@@ -64,7 +64,7 @@ The analysis addresses questions including:
 
 - **UPI is the dominant payment method.** UPI accounted for 5,404 of 16,543 visits (approximately 33%) and generated approximately ₹496M in revenue. Debit Card, Credit Card, and Cash were relatively close in both visit volume and revenue.
 
-- **Average bill amounts are relatively consistent across age groups.** Average bills remain within approximately the ₹88K–94K range across the four age groups, suggesting that age alone does not show a strong association with bill amount in this dataset.
+- **Average bill amounts are relatively consistent across age groups.** Average bills remain within approximately the ₹88K–92K range across the four age groups, suggesting that age alone does not show a strong association with bill amount in this dataset.
 
 - **Overall service snapshot.** Across all 16,543 visits, the average wait time was approximately 56.5 minutes and the average patient satisfaction score was 3.62/5.
 
@@ -115,21 +115,15 @@ Run the SQL files in the following order against a MySQL 8+ instance:
 
 ## Visualizations
 
-### Revenue by Payment Method
-
 ![Revenue by Payment Method](images/revenue-by-payment-method.png)
 UPI generated the highest revenue among the four payment methods, accounting for approximately 33% of total visits.
 
 <br>
 
-### Average Bill Amount by Age Group
-
 ![Average Bill Amount by Age Group](images/average-bill-by-age-group.png)
 Average bill amounts remained relatively consistent across age groups, ranging from approximately ₹88K to ₹92K.
 
 <br>
-
-### Top 10 Departments by Patient Satisfaction
 
 ![Top 10 Departments by Patient Satisfaction](images/top-10-departments-by-satisfaction.png)
 The chart highlights the ten departments with the highest average patient satisfaction scores.
