@@ -112,3 +112,25 @@ Run the SQL files in the following order against a MySQL 8+ instance:
 3. `sql/03_data_cleaning.sql` — cleans and consolidates the data.
 4. `sql/04_exploratory_analysis.sql` — runs the exploratory analysis.
 
+
+## Visualizations
+
+### Revenue by Payment Method
+
+![Revenue by Payment Method](images/revenue-by-payment-method.png)
+UPI generated the highest revenue among the four payment methods, accounting for approximately 33% of total visits.
+
+<br>
+
+### Average Bill Amount by Age Group
+
+![Average Bill Amount by Age Group](images/average-bill-by-age-group.png)
+Average bill amounts remained relatively consistent across age groups, ranging from approximately ₹88K to ₹92K.
+
+<br>
+
+### Top 10 Departments by Patient Satisfaction
+
+![Top 10 Departments by Patient Satisfaction](images/top-10-departments-by-satisfaction.png)
+The chart highlights the ten departments with the highest average patient satisfaction scores.
+
